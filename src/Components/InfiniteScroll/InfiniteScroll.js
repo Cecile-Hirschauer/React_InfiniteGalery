@@ -6,6 +6,7 @@ export default function InfiniteScroll() {
   const [dataImg, setDataImg] = useState([[], [], []]);
   const [pageIndex, setPageIndex] = useState(1);
   const [searchState, setSearchState] = useState("random");
+  const [firstCall, setFirstCall] = useState(true)
 
   const infiniteFetchData = () => {
     fetch(`https://api.unsplash.com/search/photos?page=${pageIndex}&per_page=30
@@ -35,6 +36,43 @@ export default function InfiniteScroll() {
         }
 
         setDataImg(newFreshState);
+        setFirstCall(false);
+      });
+  };
+
+  useEffect(() => {
+      if(firstCall) return;
+      searchFetchData();
+  }, [searchState])
+
+  const searchFetchData = () => {
+    fetch(`https://api.unsplash.com/search/photos?page=${pageIndex}&per_page=30
+      &query=${searchState}&client_id=ytti2_dpzFhzCataMZhzEX_4WHUoqIyrsLM4JgLb_zw`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const imgsReceived = [];
+
+        data.results.forEach((img) => {
+          imgsReceived.push(img.urls.regular);
+        });
+
+        const newFreshState = [
+          [],
+          [],
+          [],
+        ];
+
+        let index = 0;
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 10; j++) {
+            newFreshState[i].push(imgsReceived[index]);
+            index++;
+          }
+        }
+
+        setDataImg(newFreshState);
       });
   };
 
@@ -44,6 +82,9 @@ export default function InfiniteScroll() {
 
   const handleSearch = (e) => {
     e.preventDefault();
+
+    setSearchState(inputRef.current.value);
+    setPageIndex(1)
   };
 
   const inputRef = useRef();
