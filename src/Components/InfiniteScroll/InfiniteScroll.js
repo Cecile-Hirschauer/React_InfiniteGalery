@@ -40,13 +40,31 @@ export default function InfiniteScroll() {
 
   useEffect(() => {
     infiniteFetchData();
-  });
+  }, [pageIndex]);
 
   const handleSearch = (e) => {
     e.preventDefault();
   };
 
   const inputRef = useRef();
+
+  useEffect(() => {
+      window.addEventListener('scroll', infiniteCheck);
+
+      return () => {
+          window.removeEventListener('scroll', infiniteCheck);
+      };
+  }, []);
+
+  const infiniteCheck = () => {
+    console.log("Hello CHECK !");
+    const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
+
+    if((scrollHeight - scrollTop) === clientHeight) {
+        console.log("BOTTOM");
+        setPageIndex(pageIndex => pageIndex + 1)
+    }
+  }
 
   return (
     <div className="container">
