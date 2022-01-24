@@ -116,17 +116,17 @@ export default function InfiniteScroll() {
       <div className="card-list">
         <div>
           {dataImg[0].map((img) => {
-            return <img key={uuidv4()} src={img} alt="image unsplash" />;
+            return <img key={uuidv4()} src={img} alt="random unsplash" />;
           })}
         </div>
         <div>
           {dataImg[1].map((img) => {
-            return <img key={uuidv4()} src={img} alt="image unsplash" />;
+            return <img key={uuidv4()} src={img} alt="random unsplash" />;
           })}
         </div>
         <div>
           {dataImg[2].map((img) => {
-            return <img key={uuidv4()} src={img} alt="image unsplash" />;
+            return <img key={uuidv4()} src={img} alt="random unsplash" />;
           })}
         </div>
       </div>
